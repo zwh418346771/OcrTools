@@ -1,0 +1,170 @@
+﻿<MetroControls:MetroWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           x:Class="OcrTools.MainWindow"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:local="clr-namespace:OcrTools"
+                           xmlns:c1="http://schemas.componentone.com/winfx/2006/xaml"
+                           xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                           mc:Ignorable="d"
+                           BorderBrush="#99CCCC"
+                           BorderThickness="1"
+                           WindowTitleBrush="#99CCCC"
+                           TitleAlignment="Center"
+                           TitleCaps="False"
+                           TitleForeground="#FFFFFFFF"
+                           WindowTransitionsEnabled="False"
+                           ShowIconOnTitleBar="True"
+                           ResizeMode="CanMinimize"
+                           AllowsTransparency="True"
+                           WindowStyle="None"
+                           SizeToContent="Height"
+                           WindowStartupLocation="CenterScreen"
+                           Title="Ocr识别工具" MinHeight="300" Width="525">
+    <Window.Resources>
+        <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="10,0,10,0" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}" >
+                        <Grid>
+                            <Path x:Name="path" Data="M12,25 L90,25 78,50 12,50 z" Fill="#66CCCC" Stretch="Fill" Stroke="Black" />
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF53ACAC"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF498F8F"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ButtonStyle2" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="10,0,10,0" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Path x:Name="path"  Data="M12,25 L90,25 78,50 12,50 z" Fill="#99CCFF" RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="Black">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="180"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF7FAAD4"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF668BB0"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Button x:Name="btnNormal" 
+                        Margin="10,10,0,0" 
+                        Style="{DynamicResource ButtonStyle1}" 
+                        Content="选择图片" 
+                        FontSize="15" 
+                        Height="25"
+                        Width="100" 
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Command="{Binding ChoosePicAndOcrCommand}"/>
+                <Button x:Name="btnHigh" 
+                        Margin="94,10,0,0" 
+                        Style="{DynamicResource ButtonStyle2}" 
+                        Content="截图" 
+                        FontSize="15" 
+                        Height="25"
+                        Width="100" 
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Click="btnHigh_Click"/>
+            </Grid>
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Margin="10,10,0,0"
+                             x:Name="rbtnNormal"
+                             Content="普通精度"
+                             IsChecked="{Binding NormalRadioButton}">
+                    <RadioButton.ToolTip>
+                        <TextBlock Text="速度快，识别率一般"></TextBlock>
+                    </RadioButton.ToolTip>
+                </RadioButton>
+                <RadioButton Margin="10,10,0,0"
+                             x:Name="rbtnHigh"
+                             Content="高精度"
+                             IsChecked="{Binding PlusRadioButton}">
+                    <RadioButton.ToolTip>
+                        <TextBlock Text="速度稍满，识别率较高"></TextBlock>
+                    </RadioButton.ToolTip>
+                </RadioButton>
+            </StackPanel>
+        </Grid>
+        <TextBox Grid.Row="2"
+                 x:Name="txtResult"
+                 Width="Auto"
+                 Height="220"
+                 Text="{Binding OcrResult}"
+                 IsReadOnly="True"
+                 VerticalScrollBarVisibility ="Visible"
+                 HorizontalScrollBarVisibility="Auto"
+                 Margin="10,10,10,10"
+                 >
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Text" Value=""></Condition>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <VisualBrush AlignmentX="Left" AlignmentY="Top" Stretch="None">
+                                        <VisualBrush.Visual>
+                                            <TextBlock Padding="5,2" Background="Transparent" Foreground="Silver" FontSize="15" Text="Ocr结果将显示在此处"></TextBlock>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+    </Grid>
+</MetroControls:MetroWindow>
