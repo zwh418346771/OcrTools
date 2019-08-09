@@ -112,7 +112,10 @@ namespace OcrTools
                 {
                     imagePath = openFiledlg?.FileName;
                 }
-
+                if (string.IsNullOrWhiteSpace(imagePath))
+                {
+                    return;
+                }
                 var image = File.ReadAllBytes(imagePath);
 
                 List<Root> rootList = new List<Root>();
@@ -121,11 +124,11 @@ namespace OcrTools
                 {
                     if (NormalRadioButton == true)
                     {
-                        jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(client.GeneralBasic(image));
+                        jsonStr = JsonConvert.SerializeObject(client.GeneralBasic(image));
                     }
                     else
                     {
-                        jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(client.Accurate(image));
+                        jsonStr = JsonConvert.SerializeObject(client.Accurate(image));
                     }
                 }
                 catch (Exception ex)

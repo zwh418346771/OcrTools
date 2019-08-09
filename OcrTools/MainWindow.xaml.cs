@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -31,11 +32,28 @@ namespace OcrTools
     public partial class MainWindow : MetroWindow
     {
         public static string OcrResult;
+
+        private const int WM_SYSCOMMAND = 0x112;
+        private const int MF_STRING = 0x0;
+        private const int MF_SEPARATOR = 0x800;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool AppendMenu(IntPtr hMenu, int uFlags, int uIDNewItem, string lpNewItem);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool InsertMenuItem(IntPtr hMenu, int uPosition, int uFlags, int uIDNewItem, String ipNewItem);
+
+        private int SYSMENU_ABOUT_ID = 0x1;
+
         public MainWindow()
         {
             DataContext = new MainWindowViewModel();
             InitializeComponent();
             Closing += MainWindow_Closing;
+            SourceInitialized += MainWindow_SourceInitialized;
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -92,17 +110,17 @@ namespace OcrTools
                     System.Windows.MessageBox.Show("创建连接出错" + ex);
                     return;
                 }
-                client.Timeout = 60000; 
+                client.Timeout = 60000;
                 MemoryStream ms = new MemoryStream();
                 catchBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                byte[] bytes = ms.GetBuffer(); 
+                byte[] bytes = ms.GetBuffer();
                 ms.Close();
 
                 List<Root> rootList = new List<Root>();
                 string jsonStr = string.Empty;
                 try
                 {
-                    rbtnNormal.Dispatcher.Invoke(new Action(delegate 
+                    rbtnNormal.Dispatcher.Invoke(new Action(delegate
                     {
                         if (rbtnNormal.IsChecked == true)
                         {
@@ -129,7 +147,7 @@ namespace OcrTools
                 {
                     OcrResult = OcrResult + item.words + "\n";
                 }
-                this.txtResult.Dispatcher.Invoke(new Action(delegate 
+                this.txtResult.Dispatcher.Invoke(new Action(delegate
                 {
                     txtResult.Text = OcrResult;
                 }));
@@ -143,6 +161,30 @@ namespace OcrTools
         {
             int Description = 0;
             return InternetGetConnectedState(Description, 0);
+        }
+        private void MainWindow_SourceInitialized(object sender, EventArgs e)
+        {
+            var handle = (new WindowInteropHelper(this)).Handle;
+            IntPtr hSysMenu = GetSystemMenu(handle, false);
+            AppendMenu(hSysMenu, MF_SEPARATOR, 0, String.Empty);
+            AppendMenu(hSysMenu, MF_STRING, SYSMENU_ABOUT_ID, "About");
+        }
+        
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            HwndSource source = PresentationSource.FromVisual(this) as HwndSource;
+            source.AddHook(WndProc);
+        }
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            // Handle messages...  
+            if ((msg == WM_SYSCOMMAND) && ((int)wParam == SYSMENU_ABOUT_ID))
+            {
+                //表示监听到 关于菜单 按钮的 点击事件，并执行以下操作
+                System.Windows.MessageBox.Show("牛逼");
+            }
+            return IntPtr.Zero;
         }
     }
 }

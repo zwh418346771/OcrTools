@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<doc>
+  <assembly>
+    <name>C1.WPF.Tile.4</name>
+  </assembly>
+  <members>
+    <member name="T:C1.WPF.Tile.C1TileBase">
+      <summary>すべてのタイルコントロールの基本実装を提供します。</summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.OnCreateAutomationPeer">
+      <summary>コントロールのテストに使用される AutomationPeer を取得します。</summary>
+      <returns>コントロールのテストに使用される AutomationPeer。</returns>
+    </member>
+    <member name="F:C1.WPF.Tile.C1TileBase.CommandProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1TileBase.Command" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1TileBase.CommandParameterProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1TileBase.CommandParameter" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1TileBase.IsFrozenProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1TileBase.IsFrozen" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.#ctor">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1TileBase" />コントロールの新しいインスタンスを初期化します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.OnLoaded">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1TileService" />に現在の
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクトを登録して、タイルの更新を有効にします。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.OnUnloaded">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1TileService" />から現在の
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクトを登録解除して、タイルの更新を無効にします。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.ChangeVisualStateCommon(System.Boolean)">
+      <summary>Common 表示状態グループの現在の表示状態をオブジェクトのプロパティに一致するように更新します。</summary>
+      <param name="useTransitions">
+      </param>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.UpdateTile">
+      <summary>派生クラスでオーバーライドされた場合は、タイルの更新を実行します。</summary>
+      <remarks>
+        <see cref="T:C1.WPF.Tile.C1TileService" />は、登録されている
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクトごとにこのメソッドを呼び出します。
+      </remarks>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.UpdateCanExecuteState">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1TileBase.Command" />プロパティが設定されている場合は、ICommand.CanExecute メソッドを呼び出して、IsEnabled プロパティを更新します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileBase.ToString">
+      <summary>
+        ヘッダーが
+        <see cref="T:System.String" />値の場合に、ヘッダーを返します。
+      </summary>
+      <returns>
+      </returns>
+    </member>
+    <member name="P:C1.WPF.Tile.C1TileBase.Command">
+      <summary>このボタンが押されたときに呼び出されるコマンドを取得または設定します。</summary>
+    </member>
+    <member name="P:C1.WPF.Tile.C1TileBase.CommandParameter">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1TileBase.Command" />プロパティに渡すパラメータを取得または設定します。
+      </summary>
+    </member>
+    <member name="P:C1.WPF.Tile.C1TileBase.IsFrozen">
+      <summary>
+        現在の
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクトでタイルの更新を実行するかどうかを指定する
+        <see cref="T:System.Boolean" />値を取得または設定します。これは依存プロパティです。デフォルト値は false です。
+      </summary>
+    </member>
+    <member name="E:C1.WPF.Tile.C1TileBase.Click">
+      <summary>タイルコントロールがクリックされたときに発生します。</summary>
+    </member>
+    <member name="T:C1.WPF.Tile.SlideDirection">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1SlideTile" />コントロールのアニメーション方向のセットを記述します。
+      </summary>
+    </member>
+    <member name="F:C1.WPF.Tile.SlideDirection.Up">
+      <summary>下から上。</summary>
+    </member>
+    <member name="F:C1.WPF.Tile.SlideDirection.Left">
+      <summary>右から左。</summary>
+    </member>
+    <member name="F:C1.WPF.Tile.SlideDirection.Down">
+      <summary>上から下。</summary>
+    </member>
+    <member name="F:C1.WPF.Tile.SlideDirection.Right">
+      <summary>左から右。</summary>
+    </member>
+    <member name="F:C1.WPF.Tile.SlideDirection.All">
+      <summary>すべて。</summary>
+    </member>
+    <member name="T:C1.WPF.Tile.C1SlideTile">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1SlideTile" />コントロールは、
+        <see cref="P:C1.WPF.Tile.C1SlideTile.SlideDirection" />プロパティ値に基づいて、表裏にスライドします。
+      </summary>
+      <remarks>
+        <see cref="P:C1.WPF.Tile.C1SlideTile.SlideDirection" />プロパティには、
+        <see cref="P:C1.WPF.Tile.C1SlideTile.SlideDirection" />値の任意の組み合わせを設定できます。
+        <see cref="T:C1.WPF.Tile.C1Tile" />コントロールは、設定されている方向の１つにランダムにスライドします。
+      </remarks>
+    </member>
+    <member name="T:C1.WPF.Tile.C1Tile">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1Tile" />は、Windows 8 のライブタイルの動作を真似たヘッダー付きのアニメーションコンテンツコントロールです。
+      </summary>
+      <remarks>
+        ContentChange ストーリーボードは、ルート要素リソースで定義する必要があります。複数の ContentChange ストーリーボードを定義するには、ストーリーボードの Key 値を C1Tile.ContentChangeAnimationName で始まる文字列に設定します。コントロールテンプレートで複数のストーリーボードを定義すると、
+        <see cref="T:C1.WPF.Tile.C1Tile" />コントロールは、対応するストーリーボードをランダムに実行します。
+      </remarks>
+    </member>
+    <member name="F:C1.WPF.Tile.C1Tile._root">
+      <summary>コントロールテンプレートのビジュアルツリーのルート要素。</summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1Tile._contentChangeAnimations">
+      <summary>ControlTemplate で見つかったストーリーボードのリストを保持します。</summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1Tile.BackContentProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1Tile.BackContent" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1Tile.BackContentTemplateProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1Tile.BackContentTemplate" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1Tile.ContentSourceProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1Tile.ContentSource" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1Tile.#ctor">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1Tile" />コントロールの新しいインスタンスを初期化します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1Tile.C1Tile_SizeChanged(System.Object,System.Windows.SizeChangedEventArgs)">
+      <summary>デフォルトの実装は、境界でタイルをクリップするために C1Tile.Clip プロパティを設定します。</summary>
+      <param name="sender">
+      </param>
+      <param name="e">
+      </param>
+    </member>
+    <member name="M:C1.WPF.Tile.C1Tile.UpdateTile">
+      <summary>ContentSource プロパティ値と定義されている ContentChangeAnimation のセットに基づいて、タイルの更新を実行します。</summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1Tile.AnimateTileContent">
+      <summary>
+        現在の
+        <see cref="T:C1.WPF.Tile.C1Tile" />オブジェクトがフリーズされていない場合は、C1Tile コントロールテンプレートで定義されている、キーが "ContentChangeAnimation" から始まるストーリーボードのセットからランダムにストーリーボードを実行します。
+      </summary>
+      <remarks>カスタムアニメーションロジックを実装するには、このメソッドをオーバーライドします。</remarks>
+    </member>
+    <member name="M:C1.WPF.Tile.C1Tile.OnContentChanged(System.Object,System.Object)">
+      <summary>Content プロパティが変更されたときに呼び出されます。この実装は次のアクションを実行します。- 古いコンテンツを BackContentPresenter 要素に入れる。- ContentPresenter 要素を新しいコンテンツで更新する。- BackContentTemplate プロパティまたは ContentTemplateSelector プロパティが設定されている場合は、ContentTemplate を更新する。- タイルの更新アニメーション実行する。</summary>
+      <param name="oldContent">Content プロパティの元の値。</param>
+      <param name="newContent">Content プロパティの新しい値。</param>
+    </member>
+    <member name="P:C1.WPF.Tile.C1Tile.BackContent">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1Tile" />コントロールの元のコンテンツを表す
+        <see cref="T:System.Object" />を取得または設定します。
+      </summary>
+    </member>
+    <member name="P:C1.WPF.Tile.C1Tile.BackContentTemplate">
+      <summary>
+        ContentTemplate プロパティで定義されたテンプレートの代わりとして使用される
+        <see cref="T:System.Windows.DataTemplate" />を取得または設定します。デフォルト値は null です。
+      </summary>
+      <remarks>ContentTemplateSelector プロパティが設定されている場合、このプロパティは無視されます。</remarks>
+    </member>
+    <member name="P:C1.WPF.Tile.C1Tile.ContentSource">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1Tile" />コントロールの内容を生成するために使用されるオブジェクトソースを取得または設定します。
+      </summary>
+    </member>
+    <member name="F:C1.WPF.Tile.C1SlideTile.SlideDirectionProperty">
+      <summary>
+        <see cref="P:C1.WPF.Tile.C1SlideTile.SlideDirection" />依存プロパティを識別します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1SlideTile.#ctor">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1SlideTile" />コントロールの新しいインスタンスを初期化します。
+      </summary>
+    </member>
+    <member name="P:C1.WPF.Tile.C1SlideTile.SlideDirection">
+      <summary>
+        現在の
+        <see cref="T:C1.WPF.Tile.C1SlideTile" />コントロールに適用されるスライドアニメーションのセットを決定する
+        <see cref="P:C1.WPF.Tile.C1SlideTile.SlideDirection" />値を取得または設定します。これは依存プロパティです。デフォルト値は SlideDirection.All です。
+      </summary>
+    </member>
+    <member name="T:C1.WPF.Tile.ILoadable">
+      <summary>このオブジェクトがロードをサポートすることを指定します。</summary>
+      <remarks>
+        カスタムビジネスオブジェクトで時間がかかる初期化が必要な場合は、このインターフェイスを実装します。
+        <see cref="T:C1.WPF.Tile.C1Tile" />コントロールは、このインターフェイスを優先的に使用し、事前に
+        <see cref="M:C1.WPF.Tile.ILoadable.Load" />メソッドを呼び出して、アニメーションの前にタイルデータをプリロードします。Load メソッドは、同期または非同期のロード操作を開始します。Load メソッドが false を返す場合、C1Tile は IsLoaded プロパティが true になるまでアニメーションを遅らせます。
+      </remarks>
+    </member>
+    <member name="M:C1.WPF.Tile.ILoadable.Load">
+      <summary>同期または非同期のロード操作を開始します。</summary>
+      <returns>オブジェクトのロードが成功した場合は true を返します。そうでない場合は false を返します。</returns>
+    </member>
+    <member name="P:C1.WPF.Tile.ILoadable.IsLoaded">
+      <summary>
+        オブジェクトがロードされたかどうかを示す
+        <see cref="T:System.Boolean" />値を取得します。
+      </summary>
+    </member>
+    <member name="T:C1.WPF.Tile.MultiplyConverter">
+      <summary>指定されたパラメータ値に数値を掛ける連結コンバータを表します。</summary>
+      <remarks>
+        The
+        <see cref="T:C1.WPF.Tile.MultiplyConverter" />は一方向コンバータです。ソース値は数値型である必要があります。変換後の値の型はソース値の型と同じです。
+      </remarks>
+    </member>
+    <member name="M:C1.WPF.Tile.MultiplyConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+      <summary>値を変換します。データ連結エンジンは、値を連結ソースから連結ターゲットに伝搬するときに、このメソッドを呼び出します。</summary>
+      <param name="value">連結ソースによって作成される値。</param>
+      <param name="targetType">連結ターゲットプロパティの型。</param>
+      <param name="parameter">使用するコンバータパラメータ。</param>
+      <param name="culture">コンバータ内で使用するカルチャ。</param>
+      <returns>変換後の値。</returns>
+    </member>
+    <member name="M:C1.WPF.Tile.MultiplyConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+      <summary>値を変換します。データ連結エンジンは、値を連結ターゲットから連結ソースに伝搬するときに、このメソッドを呼び出します。</summary>
+      <param name="value">連結ターゲットによって作成される値。</param>
+      <param name="targetType">変換先の型。</param>
+      <param name="parameter">使用するコンバータパラメータ。</param>
+      <param name="culture">コンバータ内で使用するカルチャ。</param>
+      <returns>変換後の値。</returns>
+    </member>
+    <member name="T:C1.WPF.Tile.C1TileService">
+      <summary>
+        <see cref="T:C1.WPF.Tile.C1TileService" />クラスは、ポインタダウンアニメーションを処理し、タイルの更新を実行します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.GetPreservePointerCapture(System.Windows.FrameworkElement)">
+      <summary>指定された FrameworkElement から PreservePointerCapture 添付プロパティの値を取得します。</summary>
+      <param name="obj">プロパティ値が読み取られる要素。</param>
+      <returns>PreservePointerCapture 添付プロパティの値。</returns>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.SetPreservePointerCapture(System.Windows.FrameworkElement,System.Boolean)">
+      <summary>指定された要素の PreservePointerCapture 添付プロパティ値を設定します。</summary>
+      <remarks>
+        このプロパティは、要素のポインタキャプチャを解放してはならないことを
+        <see cref="T:C1.WPF.Tile.C1TileService" />に通知します。要素が独自の機能（ドラッグなど）でポインタキャプチャを必要とする場合は、Control.OnPointerMoved オーバーライドメソッドで、このプロパティを true に設定します。
+        <see cref="T:C1.WPF.Tile.C1TileService" />が要素のポインタキャプチャを正しく解放できるように、Control.OnPointerReleased および Control.OnPointerCaptureLost オーバーライドメソッドで、このプロパティ値をクリアすることを忘れないでください。
+      </remarks>Don't forget to clear this property value in the Control.OnPointerReleased and Control.OnPointerCaptureLost overrides so that the
+      <see cref="T:C1.WPF.Tile.C1TileService" />can correctly release pointer capture for the element.
+      <param name="obj">プロパティ値が読み取られる要素。</param><param name="value">設定するプロパティ値。</param></member>
+    <member name="F:C1.WPF.Tile.C1TileService.PreservePointerCaptureProperty">
+      <summary>PreservePointerCapture 添付プロパティを識別します。</summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.GetPointerDownAnimation(System.Windows.FrameworkElement)">
+      <summary>指定された FrameworkElement から PointerDownAnimation 添付プロパティの値を取得します。</summary>
+      <param name="obj">プロパティ値が読み取られる要素。</param>
+      <returns>PointerDownAnimation 添付プロパティの値。</returns>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.SetPointerDownAnimation(System.Windows.FrameworkElement,System.Boolean)">
+      <summary>指定された要素の PointerDownAnimation 添付プロパティ値を設定します。</summary>
+      <remarks>Windows 8 のライブタイルのようにポインタと対話動作する要素では、このプロパティを true に設定します。</remarks>
+      <param name="obj">添付プロパティの設定先の要素。</param>
+      <param name="value">設定するプロパティ値。</param>
+    </member>
+    <member name="F:C1.WPF.Tile.C1TileService.PointerDownAnimationProperty">
+      <summary>
+        PointerDownAnimation 添付プロパティを識別します。
+        <see cref="T:System.Windows.FrameworkElement" />でこの添付プロパティを設定すると、
+        <see cref="T:C1.WPF.Tile.C1TileService" />は、その要素のポインタダウンアニメーションを実行します。
+      </summary>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.StopPointerAnimation(System.Windows.FrameworkElement)">
+      <summary>指定されたターゲットのアクティブなポインタダウンアニメーションを停止します。</summary>
+      <param name="target">アニメーションを停止する FrameworkElement。</param>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.Register(C1.WPF.Tile.C1TileBase)">
+      <summary>
+        サービスに
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクトを登録します。
+      </summary>
+      <remarks>
+        通常、このメソッドを直接呼び出す必要はありません。
+        <see cref="T:C1.WPF.Tile.C1TileBase" />コントロールがロード時に登録します。
+      </remarks>
+      <param name="tile">
+        登録する
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクト。
+      </param>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.Unregister(C1.WPF.Tile.C1TileBase)">
+      <summary>
+        サービスから
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクトを登録解除します。
+      </summary>
+      <remarks>
+        通常、このメソッドを直接呼び出す必要はありません。
+        <see cref="T:C1.WPF.Tile.C1TileBase" />コントロールがアンロード時に登録解除します。
+      </remarks>
+      <param name="tile">
+        登録解除する
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクト。
+      </param>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.FreezeTile(C1.WPF.Tile.C1TileBase)">
+      <summary>タイルの更新をフリーズします。</summary>
+      <param name="tile">
+        フリーズする
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクト。
+      </param>
+    </member>
+    <member name="M:C1.WPF.Tile.C1TileService.UnfreezeTile(C1.WPF.Tile.C1TileBase)">
+      <summary>タイルの更新をフリーズ解除します。</summary>
+      <param name="tile">
+        フリーズ解除する
+        <see cref="T:C1.WPF.Tile.C1TileBase" />オブジェクト。
+      </param>
+    </member>
+    <member name="P:C1.WPF.Tile.C1TileService.MaxAnimationNumber">
+      <summary>
+        同時に実行できるタイルアニメーションの最大数を指定する
+        <see cref="T:System.Int32" />値を取得または設定します。
+      </summary>
+    </member>
+    <member name="P:C1.WPF.Tile.C1TileService.UpdateInterval">
+      <summary>
+        タイルの更新の最大時間間隔を指定する
+        <see cref="T:System.TimeSpan" />値を取得または設定します。
+      </summary>
+    </member>
+  </members>
+</doc>

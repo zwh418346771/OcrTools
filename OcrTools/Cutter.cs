@@ -43,11 +43,11 @@ namespace OcrTools
 
             // 鼠标样式
             Cursor = Cursors.Cross;
-            this.ClientSize = new System.Drawing.Size(837, 513);
+            this.ClientSize = new Size(837, 513);
             this.Name = "Cutter";
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Cutter_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Cutter_MouseMove);
-            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Cutter_MouseUp);
+            this.MouseDown += new MouseEventHandler(this.Cutter_MouseDown);
+            this.MouseMove += new MouseEventHandler(this.Cutter_MouseMove);
+            this.MouseUp += new MouseEventHandler(this.Cutter_MouseUp);
             this.ResumeLayout(false);
         }
         // 鼠标按下
