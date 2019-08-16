@@ -119,6 +119,11 @@ namespace OcrTools
             }
             Task.Run(() =>
             {
+                if (!HttpFileExist(ImageUri))
+                {
+                    System.Windows.MessageBox.Show("此路径不包含有效图片信息！");
+                    return;
+                }
                 WebRequest request = WebRequest.Create(ImageUri);
                 WebResponse response = request.GetResponse();
                 Stream s = response.GetResponseStream();
@@ -134,6 +139,24 @@ namespace OcrTools
 
                 GetOcrJsonAndPrint(client, bytes);
             });
+        }
+
+        public static bool HttpFileExist(string fileUrl)
+        {
+            try
+            {
+                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.CreateDefault(new Uri(fileUrl));
+                httpWebRequest.Method = "HEAD";
+                httpWebRequest.Timeout = 1000;
+                using (HttpWebResponse response = (HttpWebResponse)httpWebRequest.GetResponse())
+                {
+                    return response.StatusCode == HttpStatusCode.OK;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private DelegateCommand showUriTextBoxCommand;
