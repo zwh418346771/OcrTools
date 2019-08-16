@@ -19,6 +19,7 @@
                            AllowsTransparency="True"
                            WindowStyle="None"
                            SizeToContent="Height"
+                           SnapsToDevicePixels="True"
                            WindowStartupLocation="CenterScreen"
                            Title="Ocr识别工具" MinHeight="300" Width="525">
     <Window.Resources>
@@ -32,8 +33,8 @@
                     <ControlTemplate TargetType="{x:Type Button}" >
                         <Grid>
                             <Path x:Name="path" Data="M12,25 L90,25 78,50 12,50 z" Fill="#66CCCC" Stretch="Fill" Stroke="Black" />
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            
+                            <ContentPresenter Margin="0,0,10,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsFocused" Value="True"/>
@@ -59,7 +60,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <Path x:Name="path"  Data="M12,25 L90,25 78,50 12,50 z" Fill="#99CCFF" RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="Black">
+                            <Path x:Name="path"  Data="M25,25 L90,25 78,50 12,50 z" Fill="#99CCFF" RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="Black">
                                 <Path.RenderTransform>
                                     <TransformGroup>
                                         <ScaleTransform/>
@@ -86,6 +87,57 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ButtonStyle3" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="10,0,10,0" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Path x:Name="path"  Data="M12,25 L90,25 76,50 12,50 z" Fill="#FFFFCCCC" RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="Black">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="180"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                            <ContentPresenter Margin="10,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FFC5A0A0"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF785F5F"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="FrameworkElement" x:Key="GridAnimated">
+            <Setter Property="Visibility" Value="Hidden"/>
+            <Style.Triggers>
+                <Trigger Property="Visibility" Value="Visible">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                             From="0.0" To="1.0" Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -93,31 +145,41 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Button x:Name="btnNormal" 
+        <Grid Grid.Row="0">
+            <Button x:Name="btnNormal" 
                         Margin="10,10,0,0" 
                         Style="{DynamicResource ButtonStyle1}" 
-                        Content="选择图片" 
+                        Content="本地图片" 
                         FontSize="15" 
                         Height="25"
-                        Width="100" 
+                        Width="90"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Command="{Binding ChoosePicAndOcrCommand}"/>
-                <Button x:Name="btnHigh" 
-                        Margin="94,10,0,0" 
+            <Button x:Name="btnHigh" 
+                        Margin="84,10,0,0" 
                         Style="{DynamicResource ButtonStyle2}" 
                         Content="截图" 
                         FontSize="15" 
                         Height="25"
-                        Width="100" 
+                        Width="90" 
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Click="btnHigh_Click"/>
-            </Grid>
-        <Grid Grid.Row="1">
+            <Button x:Name="btnNet" 
+                        Margin="157,10,0,0" 
+                        Style="{DynamicResource ButtonStyle3}" 
+                        Content="网络图片" 
+                        FontSize="15" 
+                        Height="25"
+                        Width="90"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Command="{Binding ShowUriTextBoxCommand}"/>
+        </Grid>
+        <Grid Grid.Row="1" Margin="0,5,0,0">
             <StackPanel Orientation="Horizontal">
-                <RadioButton Margin="10,10,0,0"
+                <RadioButton Margin="10,5,0,0"
                              x:Name="rbtnNormal"
                              Content="普通精度"
                              IsChecked="{Binding NormalRadioButton}">
@@ -125,14 +187,60 @@
                         <TextBlock Text="速度快，识别率一般"></TextBlock>
                     </RadioButton.ToolTip>
                 </RadioButton>
-                <RadioButton Margin="10,10,0,0"
+                <RadioButton Margin="10,5,0,0"
                              x:Name="rbtnHigh"
                              Content="高精度"
                              IsChecked="{Binding PlusRadioButton}">
                     <RadioButton.ToolTip>
-                        <TextBlock Text="速度稍满，识别率较高"></TextBlock>
+                        <TextBlock Text="速度稍慢，识别率较高"></TextBlock>
                     </RadioButton.ToolTip>
                 </RadioButton>
+                <Grid Visibility="{Binding IsUriVisible}" Style="{StaticResource GridAnimated}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="41*"/>
+                        <ColumnDefinition Width="320*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Width="351"
+                             Height="25"
+                             Text="{Binding ImageUri}"
+                             FontSize="12"
+                             Margin="10,0,0,0" 
+                             Grid.ColumnSpan="2">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox">
+                                <Style.Triggers>
+                                    <MultiTrigger>
+                                        <MultiTrigger.Conditions>
+                                            <Condition Property="Text" Value=""></Condition>
+                                        </MultiTrigger.Conditions>
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <VisualBrush AlignmentX="Left" AlignmentY="Top" Stretch="None">
+                                                    <VisualBrush.Visual>
+                                                        <TextBlock Padding="5,1" Background="Transparent" Foreground="Silver" FontSize="12" Text="请输入网络路径"></TextBlock>
+                                                    </VisualBrush.Visual>
+                                                </VisualBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </MultiTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                        <TextBox.ToolTip>
+                            <TextBlock Text="{Binding ImageUri}"></TextBlock>
+                        </TextBox.ToolTip>
+                    </TextBox>
+                    <Button Height="25"
+                            Width="25"
+                            Content="√"
+                            FontFamily="Meiyo UI"
+                            HorizontalAlignment="Right"
+                            FontSize="12" 
+                            BorderBrush="{x:Null}"
+                            Grid.Column="1"
+                            Command="{Binding GetImageFromNetCommand}">
+                    </Button>
+                </Grid>
             </StackPanel>
         </Grid>
         <TextBox Grid.Row="2"
@@ -143,7 +251,7 @@
                  IsReadOnly="True"
                  VerticalScrollBarVisibility ="Visible"
                  HorizontalScrollBarVisibility="Auto"
-                 Margin="10,10,10,10"
+                 Margin="10,5,10,10"
                  >
             <TextBox.Style>
                 <Style TargetType="TextBox">

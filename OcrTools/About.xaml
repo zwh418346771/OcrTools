@@ -1,0 +1,54 @@
+﻿<MetroControls:MetroWindow x:Class="OcrTools.About"
+                           xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:local="clr-namespace:OcrTools"
+                           mc:Ignorable="d"
+                           BorderBrush="#99CCCC"
+                           BorderThickness="1"
+                           WindowTitleBrush="#99CCCC"
+                           TitleAlignment="Center"
+                           TitleCaps="False"
+                           TitleForeground="#FFFFFFFF"
+                           WindowTransitionsEnabled="False"
+                           ShowIconOnTitleBar="True"
+                           ResizeMode="CanMinimize"
+                           AllowsTransparency="True"
+                           WindowStyle="None"
+                           SizeToContent="Height"
+                           WindowStartupLocation="CenterScreen"
+                           Title="关于" MinHeight="150" Width="350">
+    <Grid Margin="10,0,10,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="作者 : OrigamiXD"
+                   FontSize="15"
+                   VerticalAlignment="Center">
+        </TextBlock>
+        <TextBlock Grid.Row="1" Text="QQ : "
+                   FontSize="15"
+                   VerticalAlignment="Center">
+        </TextBlock>
+        <TextBox Grid.Row="1" Text="418346771"
+                 FontSize="15"
+                 Width="80"
+                 VerticalAlignment="Center"
+                 BorderThickness="0"
+                 HorizontalAlignment="Left"
+                 Margin="30,0,0,0">
+        </TextBox>
+        <TextBlock Grid.Row="2"
+                   FontSize="15"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center" Width="Auto">
+            <Run Text="Github : "></Run>
+            <Hyperlink NavigateUri="https://github.com/zwh418346771" Click="Hyperlink_Click">https://github.com/zwh418346771</Hyperlink>
+        </TextBlock>
+    </Grid>
+</MetroControls:MetroWindow>

@@ -68,10 +68,9 @@ namespace OcrTools
         private void btnHigh_Click(object sender, RoutedEventArgs e)
         {
             cutter = new Cutter();
-            MainWindow main = new MainWindow();
             // 隐藏原窗口
             Hide();
-            Thread.Sleep(200);
+            Thread.Sleep(1200);
 
             // 设置截图窗口的背景图片
             Bitmap bmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
@@ -90,68 +89,70 @@ namespace OcrTools
 
         private void ScreenAndOcr()
         {
-            Task.Run(() =>
+            this.Dispatcher.Invoke(new Action(delegate
             {
-                if (!IsConnectInternet())
+                Task.Run(() =>
                 {
-                    System.Windows.MessageBox.Show("网络未链接！");
-                    return;
-                }
-                OcrResult = string.Empty;
-                var API_KEY = "gGRQ28PMwDf6nStqSND7Pa3A";
-                var SECRET_KEY = "u9j4NdWAGwK7kKjL7GWt5qmSe4EnCcYw";
-                Baidu.Aip.Ocr.Ocr client = null;
-                try
-                {
-                    client = new Baidu.Aip.Ocr.Ocr(API_KEY, SECRET_KEY);
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show("创建连接出错" + ex);
-                    return;
-                }
-                client.Timeout = 60000;
-                MemoryStream ms = new MemoryStream();
-                catchBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
-                byte[] bytes = ms.GetBuffer();
-                ms.Close();
-
-                List<Root> rootList = new List<Root>();
-                string jsonStr = string.Empty;
-                try
-                {
-                    rbtnNormal.Dispatcher.Invoke(new Action(delegate
+                    if (!IsConnectInternet())
                     {
-                        if (rbtnNormal.IsChecked == true)
-                        {
-                            jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(client.GeneralBasic(bytes));
-                        }
-                        else
-                        {
-                            jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(client.Accurate(bytes));
-                        }
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    System.Windows.MessageBox.Show("Ocr获取结果失败" + ex);
-                    return;
-                }
-                Root root = null;
-                if (!string.IsNullOrWhiteSpace(jsonStr))
-                {
-                    root = JsonConvert.DeserializeObject<Root>(jsonStr);
-                }
+                        System.Windows.MessageBox.Show("网络未链接！");
+                        return;
+                    }
+                    OcrResult = string.Empty;
+                    Baidu.Aip.Ocr.Ocr client = null;
+                    try
+                    {
+                        client = new Baidu.Aip.Ocr.Ocr(Constant.API_KEY, Constant.SECRET_KEY);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show("创建连接出错" + ex);
+                        return;
+                    }
+                    client.Timeout = 60000;
+                    MemoryStream ms = new MemoryStream();
+                    catchBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                    byte[] bytes = ms.GetBuffer();
+                    ms.Close();
 
-                foreach (var item in root.words_result)
-                {
-                    OcrResult = OcrResult + item.words + "\n";
-                }
-                this.txtResult.Dispatcher.Invoke(new Action(delegate
-                {
-                    txtResult.Text = OcrResult;
-                }));
-            });
+                    List<Root> rootList = new List<Root>();
+                    string jsonStr = string.Empty;
+                    try
+                    {
+                        rbtnNormal.Dispatcher.Invoke(new Action(delegate
+                        {
+                            if (rbtnNormal.IsChecked == true)
+                            {
+                                jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(client.GeneralBasic(bytes));
+                            }
+                            else
+                            {
+                                jsonStr = Newtonsoft.Json.JsonConvert.SerializeObject(client.Accurate(bytes));
+                            }
+                        }));
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Windows.MessageBox.Show("Ocr获取结果失败" + ex);
+                        return;
+                    }
+                    Root root = null;
+                    if (!string.IsNullOrWhiteSpace(jsonStr))
+                    {
+                        root = JsonConvert.DeserializeObject<Root>(jsonStr);
+                    }
+
+                    foreach (var item in root.words_result)
+                    {
+                        OcrResult = OcrResult + item.words + "\n";
+                    }
+                    this.txtResult.Dispatcher.Invoke(new Action(delegate
+                    {
+                        txtResult.Text = OcrResult;
+                    }));
+                });
+            }));
+            
         }
 
         [DllImport("wininet.dll")]
@@ -167,9 +168,9 @@ namespace OcrTools
             var handle = (new WindowInteropHelper(this)).Handle;
             IntPtr hSysMenu = GetSystemMenu(handle, false);
             AppendMenu(hSysMenu, MF_SEPARATOR, 0, String.Empty);
-            AppendMenu(hSysMenu, MF_STRING, SYSMENU_ABOUT_ID, "About");
+            AppendMenu(hSysMenu, MF_STRING, SYSMENU_ABOUT_ID, "关于");
         }
-        
+
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -178,11 +179,10 @@ namespace OcrTools
         }
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            // Handle messages...  
             if ((msg == WM_SYSCOMMAND) && ((int)wParam == SYSMENU_ABOUT_ID))
             {
-                //表示监听到 关于菜单 按钮的 点击事件，并执行以下操作
-                System.Windows.MessageBox.Show("牛逼");
+                About about = new About();
+                about.ShowDialog();
             }
             return IntPtr.Zero;
         }

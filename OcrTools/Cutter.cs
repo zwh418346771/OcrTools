@@ -80,47 +80,54 @@ namespace OcrTools
 
                 Invalidate();
                 Update();
-                Graphics g = this.CreateGraphics();
+                Graphics g = CreateGraphics();
                 g.DrawRectangle(pen, rect);
             }
         }
         // 鼠标松开
         private void Cutter_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            try
             {
-                isCatchStart = false;
+                if (e.Button == MouseButtons.Left)
+                {
+                    isCatchStart = false;
 
-                Update();
+                    Update();
 
-                // 保存图片到图片框
-                bmp = new Bitmap(width, height);
-                Graphics g = Graphics.FromImage(bmp);
-                g.DrawImage(BackgroundImage, new Rectangle(0, 0, width, height), new Rectangle(rectX, rectY, width, height), GraphicsUnit.Pixel);
-                MainWindow.catchBmp = bmp;
+                    // 保存图片到图片框
+                    bmp = new Bitmap(width, height);
+                    Graphics g = Graphics.FromImage(bmp);
+                    g.DrawImage(BackgroundImage, new Rectangle(0, 0, width, height), new Rectangle(rectX, rectY, width, height), GraphicsUnit.Pixel);
+                    MainWindow.catchBmp = bmp;
 
-                // 确定按钮
-                btnOK = new Button();
-                btnOK.Location = new Point(e.X, e.Y);
-                btnOK.Size = new Size(50, 25);
-                btnOK.Text = "确认";
-                btnOK.Click += (sende, ee) => DialogResult = DialogResult.OK;
-                Controls.Add(btnOK);
-                Update();
-                // 取消按钮
-                btnCancel = new Button();
-                btnCancel.Location = new Point(e.X+50, e.Y);
-                btnCancel.Size = new Size(50, 25);
-                btnCancel.Text = "取消";
-                btnCancel.Click += BtnCancel_Click;
-                Controls.Add(btnCancel);
-                Update();
+                    // 确定按钮
+                    btnOK = new Button();
+                    btnOK.Location = new Point(e.X, e.Y);
+                    btnOK.Size = new Size(50, 25);
+                    btnOK.Text = "确认";
+                    btnOK.Click += (sende, ee) => DialogResult = DialogResult.OK;
+                    Controls.Add(btnOK);
+                    Update();
+                    // 取消按钮
+                    btnCancel = new Button();
+                    btnCancel.Location = new Point(e.X + 50, e.Y);
+                    btnCancel.Size = new Size(50, 25);
+                    btnCancel.Text = "取消";
+                    btnCancel.Click += BtnCancel_Click;
+                    Controls.Add(btnCancel);
+                    Update();
 
-                // 绘制矩形区域
-                Rectangle rect = new Rectangle(rectX, rectY, width, height);
-                Pen pen = new Pen(Color.Red, 1);
-                g = this.CreateGraphics();
-                g.DrawRectangle(pen, rect);
+                    // 绘制矩形区域
+                    Rectangle rect = new Rectangle(rectX, rectY, width, height);
+                    Pen pen = new Pen(Color.Red, 1);
+                    g = this.CreateGraphics();
+                    g.DrawRectangle(pen, rect);
+                    Cursor = Cursors.Default;
+                }
+            }
+            catch (Exception)
+            {
             }
         }
 
