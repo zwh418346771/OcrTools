@@ -1,16 +1,12 @@
-﻿using Microsoft.Win32;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,6 +16,29 @@ namespace OcrTools
 {
     class MainWindowViewModel : BindableBase
     {
+        private WeakReference _viewHolder = null;
+
+        private MainWindow MyWindow
+        {
+            get
+            {
+                if (_viewHolder == null || _viewHolder.IsAlive == false)
+                {
+                    return null;
+                }
+                return _viewHolder.Target as MainWindow;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    _viewHolder = null;
+                    return;
+                }
+                _viewHolder = new WeakReference(value);
+            }
+        }
+
         private int sliderValue;
         /// <summary>
         /// 
@@ -80,6 +99,16 @@ namespace OcrTools
             set { SetProperty(ref isUriVisible, value); }
         }
 
+        private Visibility isProgressVisibility = Visibility.Collapsed;
+        /// <summary>
+        /// 
+        /// </summary>
+        public Visibility IsProgressVisibility
+        {
+            get { return isProgressVisibility; }
+            set { SetProperty(ref isProgressVisibility, value); }
+        }
+
         private Baidu.Aip.Ocr.Ocr client;
         /// <summary>
         /// 
@@ -95,6 +124,91 @@ namespace OcrTools
             NormalRadioButton = true;
             IsUriVisible = Visibility.Hidden;
             CreatOcrClient();
+        }
+
+        private Cutter cutter = null;
+
+        public static Bitmap catchBmp = null;
+        #region Command
+
+        private DelegateCommand<Window> contentRenderedCommand;
+        public DelegateCommand<Window> ContentRenderedCommand
+        {
+            get
+            {
+                if (contentRenderedCommand == null)
+                {
+                    contentRenderedCommand = new DelegateCommand<Window>(ContentRendered);
+                }
+                return contentRenderedCommand;
+            }
+        }
+
+        /// <summary>
+        /// set the mainwindow
+        /// </summary>
+        /// <param name="window"></param>
+        private void ContentRendered(Window window)
+        {
+            MyWindow = (MainWindow)window;
+            MyWindow.Owner = window.Owner;
+        }
+
+        private DelegateCommand screenPicCommand;
+        public DelegateCommand ScreenPicCommand
+        {
+            get
+            {
+                if (screenPicCommand == null)
+                {
+                    screenPicCommand = new DelegateCommand(ScreenPic);
+                }
+                return screenPicCommand;
+            }
+        }
+
+        private void ScreenPic()
+        {
+            cutter = new Cutter();
+            // 隐藏原窗口
+            MyWindow.Hide();
+            Thread.Sleep(1000);
+
+            // 设置截图窗口的背景图片
+            Bitmap bmp = new Bitmap(Screen.AllScreens[0].Bounds.Width, Screen.AllScreens[0].Bounds.Height);
+            Graphics g = Graphics.FromImage(bmp);
+            g.CopyFromScreen(new System.Drawing.Point(0, 0), new System.Drawing.Point(0, 0), new System.Drawing.Size(bmp.Width, bmp.Height));
+            cutter.BackgroundImage = bmp;
+
+            // 显示原窗口
+            MyWindow.Show();
+
+            // 显示截图窗口
+            cutter.WindowState = FormWindowState.Maximized;
+            cutter.ShowDialog();
+            ScreenAndOcr();
+        }
+
+        public void ScreenAndOcr()
+        {
+            MyWindow.Dispatcher.Invoke(new Action(delegate
+            {
+                Task.Run(() =>
+                {
+                    if (!IsConnectInternet())
+                    {
+                        System.Windows.MessageBox.Show("网络未链接！");
+                        return;
+                    }
+                    MemoryStream ms = new MemoryStream();
+                    catchBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                    byte[] bytes = ms.GetBuffer();
+                    ms.Close();
+
+                    GetOcrJsonAndPrint(Client, bytes);
+                });
+            }));
+
         }
 
         private DelegateCommand getImageFromNetCommand;
@@ -137,7 +251,7 @@ namespace OcrTools
                 byte[] bytes = ms.GetBuffer();
                 ms.Close();
 
-                GetOcrJsonAndPrint(client, bytes);
+                GetOcrJsonAndPrint(Client, bytes);
             });
         }
 
@@ -230,12 +344,17 @@ namespace OcrTools
                 }
                 var bytes = File.ReadAllBytes(imagePath);
 
-                GetOcrJsonAndPrint(client,bytes);
+                GetOcrJsonAndPrint(Client, bytes);
             });
         }
 
+        #endregion
+
+        #region Method
+
         private void GetOcrJsonAndPrint(Baidu.Aip.Ocr.Ocr client,byte[] bytes)
         {
+            IsProgressVisibility = Visibility.Visible;
             List<Root> rootList = new List<Root>();
             string jsonStr = string.Empty;
             try
@@ -264,6 +383,7 @@ namespace OcrTools
             {
                 OcrResult = OcrResult + item.words + "\n";
             }
+            IsProgressVisibility = Visibility.Collapsed;
         }
 
         private void CreatOcrClient()
@@ -287,6 +407,8 @@ namespace OcrTools
             int Description = 0;
             return InternetGetConnectedState(Description, 0);
         }
+        
+        #endregion
 
         #region Entity
         public class Words_resultItem

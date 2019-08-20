@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace OcrTools
@@ -76,7 +70,7 @@ namespace OcrTools
                 height = Math.Abs(e.Y - startPoint.Y);
 
                 Rectangle rect = new Rectangle(rectX, rectY, width, height);
-                Pen pen = new Pen(Color.Red, 1);
+                Pen pen = new Pen(Color.Gray, 1);
 
                 Invalidate();
                 Update();
@@ -99,7 +93,7 @@ namespace OcrTools
                     bmp = new Bitmap(width, height);
                     Graphics g = Graphics.FromImage(bmp);
                     g.DrawImage(BackgroundImage, new Rectangle(0, 0, width, height), new Rectangle(rectX, rectY, width, height), GraphicsUnit.Pixel);
-                    MainWindow.catchBmp = bmp;
+                    MainWindowViewModel.catchBmp = bmp;
 
                     // 确定按钮
                     btnOK = new Button();
@@ -120,7 +114,7 @@ namespace OcrTools
 
                     // 绘制矩形区域
                     Rectangle rect = new Rectangle(rectX, rectY, width, height);
-                    Pen pen = new Pen(Color.Red, 1);
+                    Pen pen = new Pen(Color.Gray, 1);
                     g = this.CreateGraphics();
                     g.DrawRectangle(pen, rect);
                     Cursor = Cursors.Default;

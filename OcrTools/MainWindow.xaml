@@ -6,9 +6,11 @@
                            xmlns:local="clr-namespace:OcrTools"
                            xmlns:c1="http://schemas.componentone.com/winfx/2006/xaml"
                            xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                           xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                            mc:Ignorable="d"
                            BorderBrush="#99CCCC"
                            BorderThickness="1"
+                           x:Name="window"
                            WindowTitleBrush="#99CCCC"
                            TitleAlignment="Center"
                            TitleCaps="False"
@@ -139,6 +141,11 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding ContentRenderedCommand}" CommandParameter="{Binding ElementName=window}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -147,35 +154,35 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Button x:Name="btnNormal" 
-                        Margin="10,10,0,0" 
-                        Style="{DynamicResource ButtonStyle1}" 
-                        Content="本地图片" 
-                        FontSize="15" 
-                        Height="25"
-                        Width="90"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Command="{Binding ChoosePicAndOcrCommand}"/>
+                    Margin="10,10,0,0" 
+                    Style="{DynamicResource ButtonStyle1}" 
+                    Content="本地图片" 
+                    FontSize="15" 
+                    Height="25"
+                    Width="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ChoosePicAndOcrCommand}"/>
             <Button x:Name="btnHigh" 
-                        Margin="84,10,0,0" 
-                        Style="{DynamicResource ButtonStyle2}" 
-                        Content="截图" 
-                        FontSize="15" 
-                        Height="25"
-                        Width="90" 
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Click="btnHigh_Click"/>
+                    Margin="84,10,0,0" 
+                    Style="{DynamicResource ButtonStyle2}" 
+                    Content="截图" 
+                    FontSize="15" 
+                    Height="25"
+                    Width="90" 
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ScreenPicCommand}"/>
             <Button x:Name="btnNet" 
-                        Margin="157,10,0,0" 
-                        Style="{DynamicResource ButtonStyle3}" 
-                        Content="网络图片" 
-                        FontSize="15" 
-                        Height="25"
-                        Width="90"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        Command="{Binding ShowUriTextBoxCommand}"/>
+                    Margin="157,10,0,0" 
+                    Style="{DynamicResource ButtonStyle3}" 
+                    Content="网络图片" 
+                    FontSize="15" 
+                    Height="25"
+                    Width="90"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Command="{Binding ShowUriTextBoxCommand}"/>
         </Grid>
         <Grid Grid.Row="1" Margin="0,5,0,0">
             <StackPanel Orientation="Horizontal">
@@ -274,5 +281,151 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
+
+        <Grid Grid.Row="2"
+              Visibility="{Binding IsProgressVisibility}"
+              IsVisibleChanged="Progress_IsVisibleChanged"
+              VerticalAlignment="Top"
+              Height="235">
+            <Grid x:Name="Progress">
+                <Grid.Resources>
+                    <Storyboard x:Key="ProgressStoryboard">
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Rotate_1" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever" BeginTime="0:0:0.0">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="90"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="225">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseIn"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:2.0" Value="360">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Rotate_2" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever" BeginTime="0:0:0.2">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="90"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="225">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseIn"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:2.0" Value="360">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Rotate_3" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever" BeginTime="0:0:0.4">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="90"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="225">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseIn"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:2.0" Value="360">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Rotate_4" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever" BeginTime="0:0:0.6">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="90"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="225">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseIn"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:2.0" Value="360">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Rotate_5" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever" BeginTime="0:0:0.8">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="90"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="225">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseIn"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:2.0" Value="360">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Rotate_6" Storyboard.TargetProperty="Angle" RepeatBehavior="Forever" BeginTime="0:0:1">
+                            <EasingDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.2" Value="90"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:1.6" Value="225">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseIn"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                            <EasingDoubleKeyFrame KeyTime="0:0:2.0" Value="360">
+                                <EasingDoubleKeyFrame.EasingFunction>
+                                    <SineEase EasingMode="EaseOut"/>
+                                </EasingDoubleKeyFrame.EasingFunction>
+                            </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                    </Storyboard>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Rectangle Fill="#FFFFFFFF" Grid.ColumnSpan="3" Grid.RowSpan="5"/>
+                <Grid Grid.Column="1" Grid.Row="1" Width="56" Height="56" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="Rotate_1"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Width="9" Height="9" Fill="#99CCCC" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="1" Width="56" Height="56" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="Rotate_2"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Width="9" Height="9" Fill="#99CCCC" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="1" Width="56" Height="56" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="Rotate_3"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Width="9" Height="9" Fill="#99CCCC" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="1" Width="56" Height="56" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="Rotate_4"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Width="9" Height="9" Fill="#99CCCC" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="1" Width="56" Height="56" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="Rotate_5"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Width="9" Height="9" Fill="#99CCCC" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="1" Width="56" Height="56" HorizontalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform x:Name="Rotate_6"/>
+                    </Grid.RenderTransform>
+                    <Ellipse Width="9" Height="9" Fill="#99CCCC" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </MetroControls:MetroWindow>

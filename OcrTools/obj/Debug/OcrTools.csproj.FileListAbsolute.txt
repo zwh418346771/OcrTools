@@ -178,11 +178,13 @@ D:\Project\OcrTools_WPF\OcrTools\bin\Debug\tr\C1.WPF.4.resources.dll
 D:\Project\OcrTools_WPF\OcrTools\bin\Debug\zh\C1.WPF.4.resources.dll
 D:\Project\OcrTools_WPF\OcrTools\bin\Debug\zh-Hans\C1.WPF.4.resources.dll
 D:\Project\OcrTools_WPF\OcrTools\bin\Debug\zh-Hant\C1.WPF.4.resources.dll
+D:\Project\OcrTools_WPF\OcrTools\obj\Debug\About.g.cs
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\MainWindow.g.cs
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\App.g.cs
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools_MarkupCompile.cache
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools_MarkupCompile.lref
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\App.baml
+D:\Project\OcrTools_WPF\OcrTools\obj\Debug\About.baml
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\MainWindow.baml
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.g.resources
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.Cutter.resources
@@ -191,6 +193,3 @@ D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.csproj.GenerateResource.Cach
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.exe.licenses
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.exe
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.pdb
-D:\Project\OcrTools_WPF\OcrTools\obj\Debug\About.g.cs
-D:\Project\OcrTools_WPF\OcrTools\obj\Debug\About.baml
-D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.csprojResolveAssemblyReference.cache
