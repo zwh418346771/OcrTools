@@ -37,11 +37,11 @@
         </TextBlock>
         <TextBox Grid.Row="1" Text="418346771"
                  FontSize="15"
-                 Width="80"
+                 Width="100"
                  VerticalAlignment="Center"
                  BorderThickness="0"
                  HorizontalAlignment="Left"
-                 Margin="30,0,0,0">
+                 Margin="35,0,0,0">
         </TextBox>
         <TextBlock Grid.Row="2"
                    FontSize="15"

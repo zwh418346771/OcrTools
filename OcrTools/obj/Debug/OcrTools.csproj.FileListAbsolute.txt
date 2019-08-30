@@ -193,3 +193,4 @@ D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.csproj.GenerateResource.Cach
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.exe.licenses
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.exe
 D:\Project\OcrTools_WPF\OcrTools\obj\Debug\OcrTools.pdb
+D:\Project\OcrTools_WPF\OcrTools\obj\Debug\GeneratedInternalTypeHelper.g.cs

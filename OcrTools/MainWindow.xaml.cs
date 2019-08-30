@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
+using static OcrTools.MainWindowViewModel;
 
 namespace OcrTools
 {
@@ -100,6 +101,17 @@ namespace OcrTools
                     }
                 }));
             });
+        }
+        
+        private void testlist_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (testlist.SelectedIndex == -1)
+            {
+                return;
+            }
+            var text = (Record)testlist.SelectedItem;
+            Clipboard.SetDataObject(text.RecordText);
+            testlist.SelectedIndex = -1;
         }
     }
 }

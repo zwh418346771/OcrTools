@@ -125,6 +125,42 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="ButtonStyle4" TargetType="{x:Type Button}">
+            <Setter Property="Padding" Value="10,0,10,0" />
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Path x:Name="path"  Data="M12,25 L90,25 90,50 12,50 z" Fill="#FFBAD656" RenderTransformOrigin="0.5,0.5" Stretch="Fill" Stroke="Black">
+                                <Path.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="180"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Path.RenderTransform>
+                            </Path>
+                            <ContentPresenter Margin="0,0,0,0" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True"/>
+                            <Trigger Property="IsDefaulted" Value="True"/>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF97B041"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="path" Value="#FF697A2E"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False"/>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style TargetType="FrameworkElement" x:Key="GridAnimated">
             <Setter Property="Visibility" Value="Hidden"/>
             <Style.Triggers>
@@ -141,6 +177,11 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Gesture="ALT+F1" Key="F1" Command="{Binding ChoosePicAndOcrCommand}"></KeyBinding>
+        <KeyBinding Gesture="ALT+F2" Key="F2" Command="{Binding ScreenPicCommand}"></KeyBinding>
+        <KeyBinding Gesture="ALT+F3" Key="F3" Command="{Binding ShowUriTextBoxCommand}"></KeyBinding>
+    </Window.InputBindings>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
             <i:InvokeCommandAction Command="{Binding ContentRenderedCommand}" CommandParameter="{Binding ElementName=window}"/>
@@ -162,7 +203,11 @@
                     Width="90"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ChoosePicAndOcrCommand}"/>
+                    Command="{Binding ChoosePicAndOcrCommand}">
+                <Button.ToolTip>
+                    <TextBlock Text="Alt+F1"></TextBlock>
+                </Button.ToolTip>
+            </Button>
             <Button x:Name="btnHigh" 
                     Margin="84,10,0,0" 
                     Style="{DynamicResource ButtonStyle2}" 
@@ -172,7 +217,11 @@
                     Width="90" 
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ScreenPicCommand}"/>
+                    Command="{Binding ScreenPicCommand}">
+                <Button.ToolTip>
+                    <TextBlock Text="Alt+F2"></TextBlock>
+                </Button.ToolTip>
+            </Button>
             <Button x:Name="btnNet" 
                     Margin="157,10,0,0" 
                     Style="{DynamicResource ButtonStyle3}" 
@@ -182,10 +231,64 @@
                     Width="90"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
-                    Command="{Binding ShowUriTextBoxCommand}"/>
+                    Command="{Binding ShowUriTextBoxCommand}">
+                <Button.ToolTip>
+                    <TextBlock Text="Alt+F3"></TextBlock>
+                </Button.ToolTip>
+            </Button>
+            <Button x:Name="btnOcrRecord" 
+                    Margin="0,10,10,0"
+                    Style="{DynamicResource ButtonStyle4}" 
+                    Content="记录" 
+                    FontSize="15" 
+                    Height="25"
+                    Width="50"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Command="{Binding RecordShowCommand}" Background="#FFC2E254">
+                <Button.ToolTip>
+                    <TextBlock Text="查看过往成功完成Ocr的文字的记录"></TextBlock>
+                </Button.ToolTip>
+            </Button>
+            <Popup local:PopopExtension.PopupPlacementTarget="{Binding ElementName=btnOcrRecord}" Name="pop1" StaysOpen="True" IsOpen="{Binding IsRecordVisible}" HorizontalOffset="524" VerticalOffset="-35">
+                <Grid Height="300" Width="170">
+                    <Border BorderThickness="1" Background="White" BorderBrush="#99CCCC">
+                        <StackPanel Orientation="Vertical" Margin="5,5">
+                            <ListBox Name="testlist"
+                                     Height="290"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     ItemsSource="{Binding RecordList}"
+                                     SelectionChanged="testlist_SelectionChanged">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="35"></ColumnDefinition>
+                                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Border BorderThickness="0,0,1.5,0" BorderBrush="#99CCCC">
+                                                <TextBlock Grid.Column="0" Height="30" Text="{Binding Path=RecordTime,Mode=OneWay}"/>
+                                            </Border>
+                                            <TextBlock Grid.Column="1" Height="30" Text="{Binding Path=RecordText,Mode=OneWay}">
+                                                <TextBlock.ToolTip>
+                                                    <TextBlock Text="{Binding Path=RecordText,Mode=OneWay}"></TextBlock>
+                                                </TextBlock.ToolTip>
+                                            </TextBlock>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Popup>
         </Grid>
         <Grid Grid.Row="1" Margin="0,5,0,0">
-            <StackPanel Orientation="Horizontal">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="498*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
                 <RadioButton Margin="10,5,0,0"
                              x:Name="rbtnNormal"
                              Content="普通精度"

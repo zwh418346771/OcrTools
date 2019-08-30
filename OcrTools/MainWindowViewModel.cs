@@ -3,6 +3,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -47,6 +48,16 @@ namespace OcrTools
         {
             get { return sliderValue; }
             set { SetProperty(ref sliderValue, value); }
+        }
+
+        private ObservableCollection<Record> recordList;
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<Record> RecordList
+        {
+            get { return recordList; }
+            set { SetProperty(ref recordList, value); }
         }
 
         private string ocrResult;
@@ -99,6 +110,16 @@ namespace OcrTools
             set { SetProperty(ref isUriVisible, value); }
         }
 
+        private bool isRecordVisible;
+        /// <summary>
+        /// 
+        /// </summary>
+        public bool IsRecordVisible
+        {
+            get { return isRecordVisible; }
+            set { SetProperty(ref isRecordVisible, value); }
+        }
+
         private Visibility isProgressVisibility = Visibility.Collapsed;
         /// <summary>
         /// 
@@ -124,6 +145,7 @@ namespace OcrTools
             NormalRadioButton = true;
             IsUriVisible = Visibility.Hidden;
             CreatOcrClient();
+            RecordList = new ObservableCollection<Record>();
         }
 
         private Cutter cutter = null;
@@ -169,6 +191,7 @@ namespace OcrTools
 
         private void ScreenPic()
         {
+            IsRecordVisible = false;
             cutter = new Cutter();
             // 隐藏原窗口
             MyWindow.Hide();
@@ -267,7 +290,7 @@ namespace OcrTools
                     return response.StatusCode == HttpStatusCode.OK;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -299,6 +322,32 @@ namespace OcrTools
             }
         }
 
+        private DelegateCommand recordShowCommand;
+        public DelegateCommand RecordShowCommand
+        {
+            get
+            {
+                if (recordShowCommand == null)
+                {
+                    recordShowCommand = new DelegateCommand(RecordShow);
+                }
+                return recordShowCommand;
+            }
+        }
+
+        private void RecordShow()
+        {
+            if (IsRecordVisible == true)
+            {
+                IsRecordVisible = false;
+            }
+            else
+            {
+                IsRecordVisible = false;
+                IsRecordVisible = true;
+            }
+        }
+
         private DelegateCommand choosePicAndOcrCommand;
         public DelegateCommand ChoosePicAndOcrCommand
         {
@@ -326,10 +375,12 @@ namespace OcrTools
                 }
                 string imagePath = string.Empty;
                 Client.Timeout = 60000;  // 修改超时时间
-                Microsoft.Win32.OpenFileDialog openFiledlg = new Microsoft.Win32.OpenFileDialog();
-                openFiledlg.Filter = "(*.jpg,*.png,*.jpeg,*.bmp,*.gif)|*.jpg;*.png;*.jpeg;*.bmp;*.gif|All files(*.*)|*.*";
-                openFiledlg.FilterIndex = 1;
-                openFiledlg.RestoreDirectory = true;
+                Microsoft.Win32.OpenFileDialog openFiledlg = new Microsoft.Win32.OpenFileDialog()
+                {
+                    Filter = "(*.jpg,*.png,*.jpeg,*.bmp,*.gif)|*.jpg;*.png;*.jpeg;*.bmp;*.gif|All files(*.*)|*.*",
+                    FilterIndex = 1,
+                    RestoreDirectory = true
+                };
                 if (openFiledlg.ShowDialog() == true)
                 {
                     imagePath = openFiledlg?.FileName;
@@ -352,7 +403,7 @@ namespace OcrTools
 
         #region Method
 
-        private void GetOcrJsonAndPrint(Baidu.Aip.Ocr.Ocr client,byte[] bytes)
+        private void GetOcrJsonAndPrint(Baidu.Aip.Ocr.Ocr client, byte[] bytes)
         {
             IsProgressVisibility = Visibility.Visible;
             List<Root> rootList = new List<Root>();
@@ -371,6 +422,7 @@ namespace OcrTools
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show("Ocr获取结果失败" + ex);
+                IsProgressVisibility = Visibility.Collapsed;
                 return;
             }
             Root root = null;
@@ -384,6 +436,10 @@ namespace OcrTools
                 OcrResult = OcrResult + item.words + "\n";
             }
             IsProgressVisibility = Visibility.Collapsed;
+            MyWindow.Dispatcher.Invoke(new Action(()=> 
+            {
+                AddRecord();
+            }));
         }
 
         private void CreatOcrClient()
@@ -399,6 +455,27 @@ namespace OcrTools
             }
         }
 
+        private void AddRecord()
+        {
+            Record record = new Record()
+            {
+                RecordTime = DateTime.Now.ToShortTimeString(),
+                RecordText = OcrResult
+            };
+            RecordList.Add(record);
+            List<Record> reclist = new List<Record>();
+            foreach (var item in RecordList)
+            {
+                reclist.Add(item);
+            }
+            reclist.Reverse();
+            RecordList.Clear();
+            foreach (var item in reclist)
+            {
+                RecordList.Add(item);
+            }
+        }
+
         [DllImport("wininet.dll")]
         private extern static bool InternetGetConnectedState(int Description, int ReservedValue);
 
@@ -407,10 +484,13 @@ namespace OcrTools
             int Description = 0;
             return InternetGetConnectedState(Description, 0);
         }
-        
+
         #endregion
 
         #region Entity
+
+        #region Ocr_Words
+        
         public class Words_resultItem
         {
             /// <summary>
@@ -434,6 +514,16 @@ namespace OcrTools
             /// </summary>
             public List<Words_resultItem> words_result { get; set; }
         }
+        #endregion
+
+        #region Record
+        public class Record
+        {
+            public string RecordTime { get; set; }
+            public string RecordText { get; set; }
+        }
+        #endregion
+
         #endregion
     }
 }
