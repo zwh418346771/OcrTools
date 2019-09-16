@@ -399,6 +399,45 @@ namespace OcrTools
             });
         }
 
+        private DelegateCommand exportRecordCommand;
+        public DelegateCommand ExportRecordCommand
+        {
+            get
+            {
+                if (exportRecordCommand == null)
+                {
+                    exportRecordCommand = new DelegateCommand(ExportRecord);
+                }
+                return exportRecordCommand;
+            }
+        }
+
+        private void ExportRecord()
+        {
+            if (RecordList.Count == 0)
+            {
+                System.Windows.MessageBox.Show("暂无记录可以导出");
+                return;
+            }
+            var directoryPath = Path.Combine(Constant.APPDATA_PATH, "OcrTools");
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            var filePath = Path.Combine(Constant.APPDATA_PATH, "OcrTools", $"{"Ocr-"}{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.txt");
+            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            {
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    foreach (var item in RecordList)
+                    {
+                        sw.WriteLine(item.RecordTime);
+                        sw.Write($"{item.RecordText}\n");
+                    }
+                    sw.Flush();
+                }
+            }
+        }
         #endregion
 
         #region Method
@@ -436,7 +475,7 @@ namespace OcrTools
                 OcrResult = OcrResult + item.words + "\n";
             }
             IsProgressVisibility = Visibility.Collapsed;
-            MyWindow.Dispatcher.Invoke(new Action(()=> 
+            MyWindow.Dispatcher.Invoke(new Action(() =>
             {
                 AddRecord();
             }));
@@ -490,7 +529,7 @@ namespace OcrTools
         #region Entity
 
         #region Ocr_Words
-        
+
         public class Words_resultItem
         {
             /// <summary>

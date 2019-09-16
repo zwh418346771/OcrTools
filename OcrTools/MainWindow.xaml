@@ -181,6 +181,7 @@
         <KeyBinding Gesture="ALT+F1" Key="F1" Command="{Binding ChoosePicAndOcrCommand}"></KeyBinding>
         <KeyBinding Gesture="ALT+F2" Key="F2" Command="{Binding ScreenPicCommand}"></KeyBinding>
         <KeyBinding Gesture="ALT+F3" Key="F3" Command="{Binding ShowUriTextBoxCommand}"></KeyBinding>
+        <KeyBinding Gesture="ALT+F4" Key="F4" Command="{Binding ExportRecordCommand}"></KeyBinding>
     </Window.InputBindings>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="ContentRendered">
@@ -249,6 +250,11 @@
                 <Button.ToolTip>
                     <TextBlock Text="查看过往成功完成Ocr的文字的记录"></TextBlock>
                 </Button.ToolTip>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding cm1click}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
             </Button>
             <Popup local:PopopExtension.PopupPlacementTarget="{Binding ElementName=btnOcrRecord}" Name="pop1" StaysOpen="True" IsOpen="{Binding IsRecordVisible}" HorizontalOffset="524" VerticalOffset="-35">
                 <Grid Height="300" Width="170">

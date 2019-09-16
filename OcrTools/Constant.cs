@@ -16,5 +16,9 @@ namespace OcrTools
         /// 
         /// </summary>
         public readonly static string SECRET_KEY = "u9j4NdWAGwK7kKjL7GWt5qmSe4EnCcYw";
+        /// <summary>
+        /// 
+        /// </summary>
+        public readonly static string APPDATA_PATH = System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
     }
 }

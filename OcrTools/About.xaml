@@ -19,7 +19,7 @@
                            WindowStyle="None"
                            SizeToContent="Height"
                            WindowStartupLocation="CenterScreen"
-                           Title="关于" MinHeight="150" Width="350">
+                           Title="关于" MinHeight="120" Width="350">
     <Grid Margin="10,0,10,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.3*"/>
